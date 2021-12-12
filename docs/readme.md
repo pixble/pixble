@@ -36,7 +36,7 @@ curl -X POST https://api.pixble.com/job/new \
 ```
 
 **Javscript**
-```Javascript
+```javascript
 const fs = require ("fs")
 const request = require('request');
 
@@ -58,7 +58,7 @@ request ("https://api.pixble.com/job/new", {
 ```
 
 **Python**
-```Python
+```python
 import requests
 import base64
 
@@ -93,7 +93,7 @@ The request needs to specify which task to perform on the image.
 
 ## Response
 Once the request is made, a response is sent as following:
-```
+```json
 {
   error_code: '',
   error_message: '',
@@ -124,7 +124,7 @@ https://api.pixble.com/job/info/[job id]?key=[API key]
 
 The response is as followed. For the both input and output file, we store them for 60 days once they are done. 
 - `status` int. There are different status code for the request. Please see below section. `11` is sccuessful. `312` is processing. `912` is failed.
-```
+```json
 {
    "error_code":"",
    "error_message":"",
