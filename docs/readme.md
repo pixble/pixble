@@ -174,5 +174,8 @@ https://api.pixble.com/media/get/fi_9WhrmvOrkqk-tbqZlXT2V?key=[API key]
 ```
 
 ### Webhooks
-The easiest way to be notified when the job is done is to setup a callback. Please 
+The easiest way to be notified when the job is done is to setup a callback. You can setup a email callback and a webhook call at the [account](https://pixble.com/account) page after you login. 
+
+The webhook send the POST request once the job is done. If your server responds with error (status code ≥ 400), the next retry will occur in 10 seconds. 1 minutes after the previous request and 2 minutes afterward.
+
 
