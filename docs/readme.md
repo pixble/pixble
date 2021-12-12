@@ -4,7 +4,7 @@ Pixble transforms images into professional edited images. Our API utilizes state
 
 
 ### API Key
-Sign up an account at [here]("https://pixble.com/signup"). Navigate to [/key]([here]("https://pixble.com/keys")) and generate a new API key.
+Sign up an account at [here]("https://pixble.com/signup"). Navigate to [/key]([here]("https://pixble.com/keys") and generate a new API key.
 
 
 ### Authentication
@@ -75,4 +75,101 @@ body = {
 res = requests.post("https://api.pixble.com/job/new", data = body)
 
 print (res)
+```
+
+### Tasks
+The request needs to specify which task to perform on the image.
+
+|Task|Name|Description|
+|--|--|--|
+|9|Pixble Magic|Automatically fix lighting, color, tone. Sharpen blurry images|
+
+### Parameters
+
+** Task 9: Pixble Magic**
+- `clarify_image` Boolean: 1 and 0 (default: 1). Toggle AI pixel enhancement option. It automatically clarifies blurry images by using state of the art AI algorithm. 
+- `adv_illumin` Float: 0 to 5 (default: 1.3). Adjust the illumination of the image with AI algorithm. 0 is no adjustment and 5 is being the maximum brightness. 
+- `color_correction` Boolean: 1 and 0 (default: 1). Advanced color and tone correction option. It automatically balance all the colors and tone to make sure they look stunning.
+
+### Response
+Once the request is made, a response is sent as following:
+```
+{
+  error_code: '',
+  error_message: '',
+  status: true,
+  result: {
+    sid: 'si_3CRjTFLXIpZTYxraY2lP1',
+    job_id: 'jb_M0M2NfgnXIjL1VnyQVs8v',
+    credit_left: 137.8,
+    credit_used: 1.2,
+    uuid: '39b394cf-649c-4ccb-a0b4-f83e2103737e'
+  },
+  timestamp: 1639335021377
+}
+```
+
+The parameters below are important for the request.
+- `status` Boolean. It is to describe if the request is successful
+- `job_id` Varchar. It is the unique job id to retrieve the result image in the later time
+
+
+### Retrieve the result
+Depending on the size of the image, the processing can vary from 30 seconds to 15 minutes. To check the status of the job, make a GET request to the following endpoint with your job id and your API key.
+
+**API Endpoint**
+```
+https://api.pixble.com/job/info/[job id]?key=[API key]
+
+```
+
+The response is as followed. For the both input and output file, we store them for 60 days once they are done. 
+- `status` int. There are different status code for the request. Please see below section. `11` is sccuessful. `312` is processing. `912` is failed.
+```
+{
+   "error_code":"",
+   "error_message":"",
+   "status":true,
+   "result":{
+      "job_id":"jb_M0M2NfgnXIjL1VnyQVs8v",
+      "task_id":"9",
+      "status":11,
+      "created_at":"2021-12-12T18:50:21.128Z",
+      "last_update":"2021-12-12T18:51:31.931Z",
+      "completed_at":"2021-12-12T18:51:31.931Z",
+      "created_via":"key",
+      "input_file":"fi_T-Yq6xNxIl4FZZCIfu4BK",
+      "output_file":"fi_9WhrmvOrkqk-tbqZlXT2V",
+      "files":[
+         {
+            "file_id":"fi_T-Yq6xNxIl4FZZCIfu4BK",
+            "job_id":"jb_M0M2NfgnXIjL1VnyQVs8v",
+            "source":"USER_API_UPLOAD",
+            "url":null,
+            "content_type":"image/jpeg",
+            "size":12872,
+            "dim":"100x125",
+            "link":"https://api.pixble.com/media/get/fi_T-Yq6xNxIl4FZZCIfu4BK",
+            "preview":"https://api.pixble.com/media/preview/fi_T-Yq6xNxIl4FZZCIfu4BK"
+         },
+         {
+            "file_id":"fi_9WhrmvOrkqk-tbqZlXT2V",
+            "job_id":"jb_M0M2NfgnXIjL1VnyQVs8v",
+            "source":"OUTPUT",
+            "url":null,
+            "content_type":"image/jpeg",
+            "size":9957,
+            "dim":"100x125",
+            "link":"https://api.pixble.com/media/get/fi_9WhrmvOrkqk-tbqZlXT2V",
+            "preview":"https://api.pixble.com/media/preview/fi_9WhrmvOrkqk-tbqZlXT2V"
+         }
+      ]
+   },
+   "timestamp":1639335895382
+}
+```
+To download the images, make a GET request to the following endpoint with your file id or job id and API key 
+
+```
+https://api.pixble.com/media/get/fi_9WhrmvOrkqk-tbqZlXT2V?key=[API key]
 ```
